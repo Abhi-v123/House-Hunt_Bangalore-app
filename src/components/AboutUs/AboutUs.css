@@ -1,0 +1,116 @@
+.aboutus-section {
+  max-width: 1200px;
+  margin: 80px auto;
+  padding: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #333;
+  text-align: center;
+}
+
+/* Hero */
+.aboutus-hero {
+  position: relative;
+  background: url("https://images.pexels.com/photos/261146/pexels-photo-261146.jpeg") center/cover no-repeat;
+  padding: 80px 20px;
+  border-radius: 15px;
+  margin-bottom: 40px;
+  color: rgb(2, 42, 46);
+  text-align: center;
+}
+
+.aboutus-hero .overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(255,255,255,0.4);  /* white overlay */
+  border-radius: 15px;
+}
+.aboutus-hero h1,
+.aboutus-hero p {
+  position: relative;
+  z-index: 1; /* stay above overlay */
+}
+
+
+/* Highlights */
+.aboutus-highlights {
+  display: flex;
+  gap: 25px;
+  justify-content: center;
+  margin: 40px 0;
+  flex-wrap: wrap;
+}
+.highlight-card {
+  background: #f9f9f9;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  flex: 1;
+  min-width: 250px;
+  max-width: 300px;
+  transition: transform 0.3s;
+}
+.highlight-card:hover {
+  transform: translateY(-5px);
+}
+.highlight-icon {
+  color: #00b94d;
+  margin-bottom: 10px;
+}
+
+/* Upcoming Projects */
+.upcoming-projects {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  margin: 30px 0;
+}
+.project-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  text-align: left;
+}
+.project-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+.project-card h4 {
+  margin: 15px;
+  color: #1246be;
+}
+.project-card p {
+  margin: 0 15px 20px;
+  color: #555;
+}
+
+/* Why Choose Us */
+.why-choose-us {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  margin: 40px 0;
+  flex-wrap: wrap;
+}
+.choose-card {
+  background: #f6f8f8;
+  padding: 20px;
+  border-radius: 12px;
+  width: 280px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+.choose-card h4 {
+  margin: 10px 0;
+  color: #00b94d;
+}
+
+/* Contact */
+.aboutus-contact {
+  margin-top: 40px;
+  padding: 15px;
+  background: #eaf6ef;
+  border-radius: 8px;
+  font-weight: bold;
+  color: #1246be;
+}

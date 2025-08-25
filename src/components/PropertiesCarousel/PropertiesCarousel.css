@@ -1,0 +1,244 @@
+.properties-section {
+  background: linear-gradient(to bottom right, #f6f9ff, #eaf7f4);
+  min-height: 100vh;
+  padding: 40px 20px;
+  border-radius: 20px;
+  margin: 40px 0;
+}
+.section-heading {
+  font-size: 2.5rem;
+  text-align: center;
+  font-weight: bold;
+  color: #1246be;
+  margin-bottom: 25px;
+}
+.carousel-container {
+  min-height: calc(100vh - 250px);
+  margin: 0 20px;
+  background-color: white;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+.deal-title {
+  font-size: 2rem;
+  text-align: center;
+  color: #00b94d;
+  margin-bottom: 20px;
+}
+.cards-container {
+  display: flex;
+  gap: 25px;
+  padding: 20px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+}
+.cards-container::-webkit-scrollbar {
+  display: none;
+}
+.property-card {
+  flex: 0 0 auto;
+  width: min(450px, 85vw);
+  background: #fff;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+.property-card:hover {
+  transform: scale(1.05);
+}
+.card-image {
+  position: relative;
+  height: 240px;
+  overflow: hidden;
+}
+.card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.category-badge {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: #1246be;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+.card-info {
+  padding: 20px;
+  text-align: left;
+}
+.card-price {
+  color: #00b94d;
+  font-weight: bold;
+  font-size: 1.4rem;
+  margin: 10px 0;
+}
+.card-location {
+  font-size: 0.95rem;
+  color: #666;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.details-list {
+  display: flex;
+  gap: 12px;
+  color: #444;
+  font-size: 0.95rem;
+  margin-bottom: 15px;
+}
+.details-button {
+  background: #00b94d;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.details-button:hover {
+  background: #009b3c;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.modal-content {
+  background: rgba(255,255,255,0.94);      /* Opaque white with light frosted glass feel */
+  padding: 24px 24px 20px 24px;
+  border-radius: 16px;
+  width: min(350px, 97vw);                /* Smaller, mobile-adaptive width */
+  max-height: 87vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 35px rgba(228, 88, 8, 0.13), 0 1px 4px rgba(0,0,0,0.07);
+  animation: scaleUp 0.3s ease-in-out;
+  font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+  color: #093606;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modal-img {
+  width: 100%;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  object-fit: cover;
+  max-height: 165px;
+  box-shadow: 0 4px 12px rgba(202, 16, 16, 0.067);
+}
+
+.modal-title {
+  color: #a61616;
+  font-size: 1.32rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.modal-details {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.modal-details p {
+  margin: 6px 0;
+  font-size: 1rem;
+  color: #59f159;
+}
+
+.modal-label {
+  color: #d10808;
+  font-weight: 700;
+  min-width: 56px;
+  display: inline-block;
+}
+
+.modal-strong {
+  color: #1fe66f;
+  font-weight: bold;
+}
+
+.modal-green {
+  color: #38d2a9;
+  font-weight: 600;
+}
+
+.modal-desc {
+  margin: 8px 0 0 0;
+  font-size: 0.98rem;
+  line-height: 1.56;
+  color: #444e57;
+}
+
+/* Buttons/group as before */
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 21px;
+}
+
+.book-button {
+  background: linear-gradient(90deg, #19bb53 60%, #13a944 100%);
+  color: #fff;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 7px;
+  font-size: 0.98rem;
+  font-weight: 600;
+  transition: background 0.22s, transform 0.13s;
+  cursor: pointer;
+}
+.book-button:hover {
+  background: linear-gradient(90deg,#0da240 60%,#02eb4f 100%);
+  transform: translateY(-2px) scale(1.03);
+}
+
+.close-button {
+  background: linear-gradient(90deg, #e9505f 70%, #c43a3a 100%);
+  color: #fff;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 7px;
+  font-size: 0.98rem;
+  font-weight: 600;
+  transition: background 0.18s, transform 0.13s;
+  cursor: pointer;
+}
+.close-button:hover {
+  background: linear-gradient(90deg, #c43a3a 60%, #e9505f 100%);
+  transform: translateY(-1.5px) scale(1.03);
+}
+
+/* Animations remain the same */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes scaleUp {
+  from { transform: scale(0.90); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}

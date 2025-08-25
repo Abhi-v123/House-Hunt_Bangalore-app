@@ -1,0 +1,21 @@
+:root {
+  --primary: #00b94d;
+  --primary-hover: #009b3c;
+  --text: #333;
+  --light-text: #777;
+  --white: #fff;
+  --overlay: rgba(0, 0, 0, 0.45);
+  --shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  --max-width: 1400px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.6;
+}

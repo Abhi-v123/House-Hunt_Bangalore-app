@@ -1,0 +1,149 @@
+.agent-page-section {
+  width: 100vw;
+  height: 100vh;
+  background: #f6f8f8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 40px;
+  padding-bottom: 50px;
+  box-sizing: border-box;
+  border-radius: 8%;
+}
+
+.agent-header {
+  font-size: 2.8rem;
+  font-weight: bold;
+  margin-bottom: 35px;
+  color: #222;
+}
+
+/* Only show 3 cards width-wise with overflow hidden to hide others */
+.agent-carousel-container {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 40px;
+  padding: 20px 0;
+  width: 920px; /* 3 cards * 280px + 2 gaps * 40px = 920px */
+  box-sizing: border-box;
+  margin: 0 auto;
+}
+
+.agent-carousel-container::-webkit-scrollbar {
+  height: 6px;
+}
+.agent-carousel-container::-webkit-scrollbar-track {
+  background: #eee;
+  border-radius: 10px;
+}
+.agent-carousel-container::-webkit-scrollbar-thumb {
+  background: #2196f3;
+  border-radius: 10px;
+}
+
+/* Individual agent cards */
+.agent-card {
+  flex: 0 0 auto;
+  width: 280px;
+  height: auto;
+  background: white;
+  border-radius: 25px;
+  /* box-shadow: 0 7px 25px rgb(20 32 62 / 0.15); */
+   box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  cursor: default;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.agent-card:hover {
+  transform: scale(1.08);
+  box-shadow: 0 15px 50px rgb(20 32 62 / 0.25);
+}
+
+.agent-photo {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+}
+
+.agent-info {
+  padding: 21px 26px;
+  text-align: center;
+}
+
+.agent-name {
+  font-weight: 700;
+  font-size: 1.4rem;
+  margin-bottom: 8px;
+  color: #2a2a2a;
+}
+
+.agent-role {
+  font-size: 1.05rem;
+  margin-bottom: 16px;
+  color: #1a56db;
+}
+
+.agent-socials {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.social-link {
+  font-weight: bold;
+  font-size: 1.3rem;
+  color: #2196f3;
+  background: #f3f7fa;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  line-height: 36px;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.social-link:hover,
+.social-link:focus {
+  background: #eaf0fc;
+  color: #1a56db;
+  outline: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .agent-carousel-container {
+    width: 800px; /* 260*3 + 40*2 = 800px */
+  }
+  .agent-card {
+    width: 260px;
+  }
+  .agent-photo {
+    height: 360px;
+  }
+  .agent-header {
+    font-size: 2.4rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .agent-carousel-container {
+    width: 90vw;
+    gap: 20px;
+    padding: 10px 0;
+  }
+  .agent-card {
+    width: 85vw;
+  }
+  .agent-photo {
+    height: 300px;
+  }
+  .agent-header {
+    font-size: 2rem;
+  }
+}
