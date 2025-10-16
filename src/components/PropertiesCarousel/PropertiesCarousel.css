@@ -38,6 +38,14 @@
 .cards-container::-webkit-scrollbar {
   display: none;
 }
+
+.cards-container {
+  scroll-snap-type: x mandatory;
+}
+.property-card {
+  scroll-snap-align: center;
+}
+
 .property-card {
   flex: 0 0 auto;
   width: min(450px, 85vw);
@@ -242,3 +250,13 @@
   from { transform: scale(0.90); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
 }
+
+.cards-container {
+  scroll-snap-type: x mandatory;
+}
+.property-card {
+  scroll-snap-align: center;
+}
+
+
+

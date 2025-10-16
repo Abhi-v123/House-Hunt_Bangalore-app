@@ -114,3 +114,16 @@
   font-weight: bold;
   color: #1246be;
 }
+
+@media (max-width: 600px) {
+  .aboutus-section {
+    padding: 10px;
+  }
+  .highlight-card, .choose-card {
+    max-width: 100%;
+    text-align: center;
+  }
+  .project-card h4 {
+    font-size: 1rem;
+  }
+}

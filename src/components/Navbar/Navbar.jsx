@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Navbar.css";
 import { MdOutlineRealEstateAgent } from "react-icons/md";
 
 export default function Navbar({ user, openLogin, handleLogout }) {
+
+        const [menuOpen, setMenuOpen] = useState(false);
   
   return (
-    <nav className="navbar">
+   <nav className="navbar">
   <div className="logo-container">
     <MdOutlineRealEstateAgent
       size={30}
@@ -14,7 +16,16 @@ export default function Navbar({ user, openLogin, handleLogout }) {
     />
     <span className="nav-title">House Hunt Bangalore</span>
   </div>
-  <div className="nav-container">
+
+  {/* Hamburger Button for Mobile */}
+  <button
+    className="hamburger"
+    onClick={() => setMenuOpen(!menuOpen)}
+  >
+    ☰
+  </button>
+
+  <div className={`nav-container ${menuOpen ? "open" : ""}`}>
     <a href="#home" className="nav-item">Home</a>
     <a href="#property" className="nav-item">Property</a>
     <a href="#agency" className="nav-item">Agency</a>
@@ -32,6 +43,7 @@ export default function Navbar({ user, openLogin, handleLogout }) {
     )}
   </div>
 </nav>
+
 
   );
 }

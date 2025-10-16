@@ -30,6 +30,14 @@
   margin: 0 auto;
 }
 
+.agent-carousel-container {
+  scroll-snap-type: x mandatory;
+}
+.agent-card {
+  scroll-snap-align: center;
+}
+
+
 .agent-carousel-container::-webkit-scrollbar {
   height: 6px;
 }

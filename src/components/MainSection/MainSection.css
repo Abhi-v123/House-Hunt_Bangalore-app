@@ -113,3 +113,15 @@
     width: 100%;
   }
 }
+
+
+@media (max-width: 400px) {
+  .hero-content h1 {
+    font-size: 1.6rem;
+  }
+  .search-form input,
+  .search-form select {
+    min-width: 100%;
+    font-size: 0.9rem;
+  }
+}
