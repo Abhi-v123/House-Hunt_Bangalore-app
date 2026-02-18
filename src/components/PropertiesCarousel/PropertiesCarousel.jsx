@@ -4,568 +4,548 @@ import {
   FaBath,
   FaRulerCombined,
   FaMapMarkerAlt,
-  FaTag,
+  FaRegHeart,
+  FaHeart,
+  FaStar,
+  FaShieldAlt,
+  FaParking,
 } from "react-icons/fa";
-import "./PropertiesCarousel.css";
+import {
+  Spin,
+  message as antdMessage,
+  Empty,
+  Modal,
+  Button,
+  Tag,
+  Typography,
+  ConfigProvider,
+  Row,
+  Col,
+  Divider,
+  Image,
+} from "antd";
+import { api } from "../../api/api";
 
-// Sample properties (can expand later or fetch from API)
-const properties = [
-  {
-    id: 1,
-    title: "Contemporary Apartment",
-    price: "₹45,00,000",
-    beds: 3,
-    baths: 2,
-    area: "1200 Sq Ft",
-    location: "Whitefield, Bangalore",
-    category: "Apartment",
-    description:
-      "A modern 3BHK apartment located in the heart of Whitefield, close to IT hubs and shopping malls.",
-    img: "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg",
-  },
-  {
-    id: 2,
-    title: "Luxury Villa",
-    price: "₹2.5 Cr",
-    beds: 5,
-    baths: 4,
-    area: "3500 Sq Ft",
-    location: "Sarjapur Road, Bangalore",
-    category: "Villa",
-    description:
-      "Spacious villa with landscaped garden, swimming pool, and premium clubhouse access.",
-    img: "https://images.pexels.com/photos/32870/pexels-photo.jpg",
-  },
-  {
-    id: 3,
-    title: "Cozy Cottage",
-    price: "₹90,00,000",
-    beds: 2,
-    baths: 1,
-    area: "950 Sq Ft",
-    location: "Indiranagar, Bangalore",
-    category: "Villa",
-    description:
-      "Charming 2BHK cottage surrounded by greenery, ideal for peaceful living.",
-    img: "https://images.pexels.com/photos/1643383/pexels-photo-1643383.jpeg",
-  },
-  {
-    id: 4,
-    title: "Modern Loft",
-    price: "₹75,00,000",
-    beds: 2,
-    baths: 1,
-    area: "980 Sq Ft",
-    location: "Koramangala, Bangalore",
-    category: "Apartment",
-    description:
-      "Stylish loft apartment located in Koramangala, perfect for young professionals.",
-    img: "https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg",
-  },
-  {
-    id: 5,
-    title: "Corporate Office Space",
-    price: "₹5 Cr",
-    beds: "-",
-    baths: "-",
-    area: "12,000 Sq Ft",
-    location: "Hebbal, Bangalore",
-    category: "Office",
-    description:
-      "Premium office space with modern amenities and ample parking.",
-    img: "https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg",
-  },
-  {
-    id: 6,
-    title: "Skyline Penthouse",
-    price: "₹4 Cr",
-    beds: 4,
-    baths: 3,
-    area: "2800 Sq Ft",
-    location: "MG Road, Bangalore",
-    category: "Apartment",
-    description:
-      "Exclusive penthouse with panoramic city views and rooftop lounge.",
-    img: "https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg",
-  },
-  {
-    id: 7,
-    title: "Country Farmhouse",
-    price: "₹1.5 Cr",
-    beds: 5,
-    baths: 2,
-    area: "5000 Sq Ft",
-    location: "Devanahalli, Bangalore",
-    category: "Villa",
-    description:
-      "Rustic farmhouse with spacious land, perfect for weekend getaways.",
-    img: "https://images.pexels.com/photos/259588/pexels-photo-259588.jpeg",
-  },
-  {
-    id: 8,
-    title: "Tech Park Tower",
-    price: "₹20 Cr",
-    beds: "-",
-    baths: "-",
-    area: "1,20,000 Sq Ft",
-    location: "Electronic City, Bangalore",
-    category: "Commercial",
-    description: "Grade A office tower suitable for IT companies and startups.",
-    img: "https://images.pexels.com/photos/323705/pexels-photo-323705.jpeg",
-  },
-  {
-    id: 9,
-    title: "Premium Mall Space",
-    price: "₹12 Cr",
-    beds: "-",
-    baths: "-",
-    area: "50,000 Sq Ft",
-    location: "Jayanagar, Bangalore",
-    category: "Commercial",
-    description: "Retail mall space in prime location with top footfall.",
-    img: "https://images.pexels.com/photos/3965522/pexels-photo-3965522.jpeg",
-  },
-  {
-    id: 10,
-    title: "Lakeview Apartments",
-    price: "₹1.2 Cr",
-    beds: 3,
-    baths: 2,
-    area: "1500 Sq Ft",
-    location: "Yelahanka, Bangalore",
-    category: "Apartment",
-    description:
-      "Beautiful apartment complex with serene lake views and jogging track.",
-    img: "https://images.pexels.com/photos/276724/pexels-photo-276724.jpeg",
-  },
-  {
-    id: 11,
-    title: "Elegant Villa",
-    price: "₹3.2 Cr",
-    beds: 4,
-    baths: 4,
-    area: "4000 Sq Ft",
-    location: "Hennur Road, Bangalore",
-    category: "Villa",
-    description: "Premium villa with luxury interiors and a private pool.",
-    img: "https://images.pexels.com/photos/1643383/pexels-photo-1643383.jpeg",
-  },
-  {
-    id: 12,
-    title: "Smart Studio Apartment",
-    price: "₹40,00,000",
-    beds: 1,
-    baths: 1,
-    area: "600 Sq Ft",
-    location: "BTM Layout, Bangalore",
-    category: "Apartment",
-    description: "Affordable smart studio with modern amenities.",
-    img: "https://images.pexels.com/photos/439391/pexels-photo-439391.jpeg",
-  },
-  {
-    id: 13,
-    title: "IT Hub Office Space",
-    price: "₹8 Cr",
-    beds: "-",
-    baths: "-",
-    area: "25,000 Sq Ft",
-    location: "Whitefield, Bangalore",
-    category: "Office",
-    description: "Modern IT office building with plug-and-play setup.",
-    img: "https://images.pexels.com/photos/56759/pexels-photo-56759.jpeg",
-  },
-  {
-    id: 14,
-    title: "Retail Complex",
-    price: "₹15 Cr",
-    beds: "-",
-    baths: "-",
-    area: "80,000 Sq Ft",
-    location: "Marathahalli, Bangalore",
-    category: "Commercial",
-    description: "Large retail complex ideal for showrooms and outlets.",
-    img: "https://images.pexels.com/photos/1643383/pexels-photo-1643383.jpeg",
-  },
-  {
-    id: 15,
-    title: "Budget Apartment",
-    price: "₹55,00,000",
-    beds: 2,
-    baths: 1,
-    area: "900 Sq Ft",
-    location: "Banashankari, Bangalore",
-    category: "Apartment",
-    description: "Affordable 2BHK apartment in a well-connected neighborhood.",
-    img: "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg",
-  },
-  {
-    id: 16,
-    title: "Luxury Office Suites",
-    price: "₹10 Cr",
-    beds: "-",
-    baths: "-",
-    area: "30,000 Sq Ft",
-    location: "Manyata Tech Park, Bangalore",
-    category: "Office",
-    description: "Exclusive office suites with premium interiors.",
-    img: "https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg",
-  },
-  {
-    id: 17,
-    title: "Villa Retreat",
-    price: "₹2 Cr",
-    beds: 4,
-    baths: 3,
-    area: "3000 Sq Ft",
-    location: "Bannerghatta Road, Bangalore",
-    category: "Villa",
-    description: "Villa with eco-friendly design and solar power.",
-    img: "https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg",
-  },
-  {
-    id: 18,
-    title: "City Center Apartments",
-    price: "₹95,00,000",
-    beds: 2,
-    baths: 2,
-    area: "1100 Sq Ft",
-    location: "Majestic, Bangalore",
-    category: "Apartment",
-    description:
-      "Central apartments with quick access to metro & bus stations.",
-    img: "https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg",
-  },
-  {
-    id: 19,
-    title: "Tech Park Space",
-    price: "₹18 Cr",
-    beds: "-",
-    baths: "-",
-    area: "1,00,000 Sq Ft",
-    location: "Outer Ring Road, Bangalore",
-    category: "Commercial",
-    description: "Corporate IT tower with world-class facilities.",
-    img: "https://images.pexels.com/photos/323705/pexels-photo-323705.jpeg",
-  },
-  {
-    id: 20,
-    title: "Designer Penthouse",
-    price: "₹3.8 Cr",
-    beds: 3,
-    baths: 3,
-    area: "2600 Sq Ft",
-    location: "Indiranagar, Bangalore",
-    category: "Apartment",
-    description: "Stylish penthouse with modern interiors and rooftop deck.",
-    img: "https://images.pexels.com/photos/276724/pexels-photo-276724.jpeg",
-  },
-  {
-    id: 21,
-    title: "Boutique Villa",
-    price: "₹2.3 Cr",
-    beds: 4,
-    baths: 3,
-    area: "3100 Sq Ft",
-    location: "HSR Layout, Bangalore",
-    category: "Villa",
-    description: "Elegant boutique villa with custom interiors and garden.",
-    img: "https://images.pexels.com/photos/32870/pexels-photo.jpg",
-  },
-  {
-    id: 22,
-    title: "Corporate Headquarters",
-    price: "₹25 Cr",
-    beds: "-",
-    baths: "-",
-    area: "1,50,000 Sq Ft",
-    location: "Bellandur, Bangalore",
-    category: "Office",
-    description:
-      "Corporate HQ with ample parking and green building certification.",
-    img: "https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg",
-  },
-  {
-    id: 23,
-    title: "Shopping Arcade",
-    price: "₹7 Cr",
-    beds: "-",
-    baths: "-",
-    area: "20,000 Sq Ft",
-    location: "Basavanagudi, Bangalore",
-    category: "Commercial",
-    description:
-      "Shopping arcade with multiple floors for showrooms and cafes.",
-    img: "https://images.pexels.com/photos/3965522/pexels-photo-3965522.jpeg",
-  },
-  {
-    id: 24,
-    title: "Elegant Apartment",
-    price: "₹1.05 Cr",
-    beds: 3,
-    baths: 2,
-    area: "1400 Sq Ft",
-    location: "JP Nagar, Bangalore",
-    category: "Apartment",
-    description: "Beautifully designed apartment with community amenities.",
-    img: "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg",
-  },
-  {
-    id: 25,
-    title: "Startup Office Hub",
-    price: "₹6 Cr",
-    beds: "-",
-    baths: "-",
-    area: "18,000 Sq Ft",
-    location: "Indiranagar, Bangalore",
-    category: "Office",
-    description:
-      "Startup-friendly office hub with co-working and private cabins.",
-    img: "https://images.pexels.com/photos/56759/pexels-photo-56759.jpeg",
-  },
-
-  // Add these to your properties array
-
-  // RENTALS START
-  {
-    id: 26,
-    title: "Parkside Rental Apartment",
-    price: "₹28,000/mo",
-    beds: 2,
-    baths: 2,
-    area: "950 Sq Ft",
-    location: "Bannerghatta Road, Bangalore",
-    category: "Apartment",
-    description:
-      "Modern, semi-furnished apartment in a gated society with kids’ play and pool. Ideal for families and professionals.",
-    img: "https://images.pexels.com/photos/1457842/pexels-photo-1457842.jpeg",
-    forRent: true,
-  },
-  {
-    id: 27,
-    title: "Urban Heights Rental",
-    price: "₹36,500/mo",
-    beds: 3,
-    baths: 2,
-    area: "1450 Sq Ft",
-    location: "Hebbal, Bangalore",
-    category: "Apartment",
-    description:
-      "High-rise apartment with balcony, gym, and power backup. Peaceful view and prime access to tech parks.",
-    img: "https://housing-images.n7net.in/4f2250e8/6e2c4c12c72f858ede32841d57b2d7ad/v0/medium/vriddhi_urban_heights-kasba-kolkata-shri_vriddhi_infra_properties.jpeg",
-    forRent: true,
-  },
-  {
-    id: 28,
-    title: "Lakefront Cozy Villa (Rent)",
-    price: "₹55,000/mo",
-    beds: 4,
-    baths: 4,
-    area: "2200 Sq Ft",
-    location: "Sanktankeri, Bangalore",
-    category: "Villa",
-    description:
-      "Spacious independent villa facing the lake, with private garden and car park. Long-term rental preferred.",
-    img: "https://images.pexels.com/photos/259588/pexels-photo-259588.jpeg",
-    forRent: true,
-  },
-  {
-    id: 29,
-    title: "Budget Rental Studio",
-    price: "₹15,000/mo",
-    beds: 1,
-    baths: 1,
-    area: "500 Sq Ft",
-    location: "Koramangala, Bangalore",
-    category: "Apartment",
-    description:
-      "Affordable studio featuring high-speed WiFi and proximity to cafes and co-working spaces.",
-    img: "https://images.pexels.com/photos/439391/pexels-photo-439391.jpeg",
-    forRent: true,
-  },
-  {
-    id: 30,
-    title: "Family-Friendly Rental House",
-    price: "₹43,000/mo",
-    beds: 3,
-    baths: 3,
-    area: "1750 Sq Ft",
-    location: "Jayanagar, Bangalore",
-    category: "Villa",
-    description:
-      "Fully furnished house in a quiet locality. Walking distance to parks, metro station, and top schools.",
-    img: "https://images.pexels.com/photos/210617/pexels-photo-210617.jpeg",
-    forRent: true,
-  },
-  {
-    id: 31,
-    title: "Techies’ Rental Apartment",
-    price: "₹32,000/mo",
-    beds: 2,
-    baths: 2,
-    area: "1200 Sq Ft",
-    location: "Whitefield, Bangalore",
-    category: "Apartment",
-    description:
-      "Great rental for IT professionals, with clubhouse, open gym, and easy highway connectivity.",
-    img: "https://images.pexels.com/photos/276724/pexels-photo-276724.jpeg",
-    forRent: true,
-  },
-  {
-    id: 32,
-    title: "Luxury Serviced Rental",
-    price: "₹70,000/mo",
-    beds: 3,
-    baths: 3,
-    area: "1800 Sq Ft",
-    location: "MG Road, Bangalore",
-    category: "Apartment",
-    description:
-      "Fully serviced, luxury 3BHK with weekly housekeeping and all furnishings included. Walk to central attractions.",
-    img: "https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg",
-    forRent: true,
-  },
-];
+const { Title, Text, Paragraph } = Typography;
 
 export default function PropertiesCarousel() {
   const [isPlaying, setIsPlaying] = useState(true);
   const scrollRef = useRef(null);
   const [selectedProperty, setSelectedProperty] = useState(null);
-  const [message, setMessage] = useState(null);
+  const [properties, setProperties] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [isWatched, setIsWatched] = useState(false);
+
+  // Responsive modal helper (fix for window.innerWidth usage)
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {
-    const scrollContainer = scrollRef.current;
-    let interval;
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
-    if (isPlaying && scrollContainer) {
-      let scrollAmount = 0;
-      interval = setInterval(() => {
-        scrollAmount += 2;
-        if (scrollAmount >= scrollContainer.scrollWidth / 2) {
-          scrollAmount = 0;
-          scrollContainer.scrollLeft = 0;
-        } else {
-          scrollContainer.scrollLeft += 2;
+  useEffect(() => {
+    fetchProperties();
+  }, []);
+
+  // Auto horizontal scroll loop
+  useEffect(() => {
+    const container = scrollRef.current;
+    let frameId;
+
+    const scroll = () => {
+      if (isPlaying && container && properties.length) {
+        container.scrollLeft += 0.8;
+
+        if (
+          container.scrollLeft >=
+          container.scrollWidth - container.clientWidth
+        ) {
+          container.scrollLeft = 0;
         }
-      }, 20);
-    }
+      }
+      frameId = requestAnimationFrame(scroll);
+    };
 
-    return () => clearInterval(interval);
-  }, [isPlaying]);
+    frameId = requestAnimationFrame(scroll);
+    return () => cancelAnimationFrame(frameId);
+  }, [isPlaying, properties]);
 
-  const handleBook = () => {
-    const loggedInUser = localStorage.getItem("loggedInUser");
-    if (loggedInUser) {
-      setMessage({
-        type: "success",
-        text: "✅ Thanks for showing interest! Our agent will contact you soon.",
-      });
-    } else {
-      setMessage({
-        type: "error",
-        text: "❌ Please login to book this property.",
-      });
+  const fetchProperties = async () => {
+    try {
+      setLoading(true);
+      const res = await api.get("/properties");
+      setProperties(res.data || []);
+    } catch {
+      antdMessage.error("Failed to load properties");
+    } finally {
+      setLoading(false);
     }
   };
 
-  return (
-    <section id="property" className="properties-section">
-      <h1 className="section-heading">🏡 Bangalore Properties</h1>
-      <div
-        className="carousel-container"
-        onMouseEnter={() => setIsPlaying(false)}
-        onMouseLeave={() => setIsPlaying(true)}
-        onTouchStart={() => setIsPlaying(false)}
-        onTouchEnd={() => setIsPlaying(true)}
-      >
-        <h2 className="deal-title">Our Best Deals</h2>
-        <div className="cards-container" ref={scrollRef}>
-          {properties.map((p) => (
-            <div className="property-card" key={p.id}>
-              <div className="card-image">
-                <img src={p.img} alt={p.title} loading="lazy" />
-                <span className="category-badge">{p.category}</span>
-              </div>
-              <div className="card-info">
-                <h3>{p.title}</h3>
-                <p className="card-price">{p.price}</p>
-                <p className="card-location">
-                  <FaMapMarkerAlt /> {p.location}
-                </p>
-                <div className="details-list">
-                  {p.beds !== "-" && (
-                    <span>
-                      <FaBed /> {p.beds} Beds
-                    </span>
-                  )}
-                  {p.baths !== "-" && (
-                    <span>
-                      <FaBath /> {p.baths} Baths
-                    </span>
-                  )}
-                  <span>
-                    <FaRulerCombined /> {p.area}
-                  </span>
-                </div>
-                <button
-                  className="details-button"
-                  onClick={() => {
-                    setSelectedProperty(p);
-                    setMessage(null);
-                  }}
-                >
-                  See Details
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+  const handleBook = () => {
+    const loggedInUser = localStorage.getItem("loggedInUser");
 
-      {/* Property Modal */}
-      {selectedProperty && (
-        <div
-          className="modal-overlay"
-          onClick={() => setSelectedProperty(null)}
-        >
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <img
-              src={selectedProperty.img}
-              alt={selectedProperty.title}
-              className="modal-img"
-            />
-            <h2 className="modal-title">{selectedProperty.title}</h2>
-            <div className="modal-details">
-              <p>
-                <span className="modal-label">Price:</span>{" "}
-                <span className="modal-strong">{selectedProperty.price}</span>
-              </p>
-              <p>
-                <span className="modal-label">Location:</span>{" "}
-                <span className="modal-green">{selectedProperty.location}</span>
-              </p>
-              <p>
-                <span className="modal-label">Area:</span>{" "}
-                <span className="modal-green">{selectedProperty.area}</span>
-              </p>
-              <p className="modal-desc">{selectedProperty.description}</p>
-            </div>
-            {message && (
-              <div className={`alert ${message.type}`}>{message.text}</div>
-            )}
-            <div className="button-group">
-              <button className="book-button" onClick={handleBook}>
-                Book Property
-              </button>
-              <button
-                className="close-button"
-                onClick={() => setSelectedProperty(null)}
-              >
-                Close
-              </button>
+    if (loggedInUser && loggedInUser !== "null") {
+      antdMessage.success("Agent notified. We will contact you shortly.");
+      setSelectedProperty(null);
+    } else {
+      antdMessage.warning("Please login to proceed.");
+    }
+  };
+
+  const toggleWatchlist = (e) => {
+    e.stopPropagation();
+    setIsWatched((prev) => !prev);
+    antdMessage.info(
+      !isWatched ? "Added to Watchlist" : "Removed from Watchlist",
+    );
+  };
+
+  // Styles (design preserved, only spacing fixes)
+  const styles = {
+    section: {
+      minHeight: "calc(100vh - 72px)",
+      padding: "40px 24px",
+      background: "linear-gradient(180deg,#fafafa 0%, #f1f5f9 100%)",
+      overflow: "hidden",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+    },
+
+    header: {
+      textAlign: "center",
+      marginBottom: 48,
+    },
+
+    // IMPORTANT: allow hover lift visibility
+    carouselWrapper: {
+      overflow: "visible",
+      position: "relative",
+    },
+
+    // Added top/bottom space so hover does not clip
+    cardsContainer: {
+      display: "flex",
+      gap: 28,
+      overflowX: "hidden",
+      paddingTop: 16,
+      paddingBottom: 20,
+    },
+
+    card: {
+      minWidth: 320,
+      maxWidth: 320,
+      background: "#fff",
+      borderRadius: 24,
+      overflow: "hidden",
+      cursor: "pointer",
+      border: "1px solid #eef2f7",
+      transition: "all .35s ease",
+      boxShadow: "0 6px 24px rgba(15,23,42,0.06)",
+    },
+
+    imageWrap: {
+      position: "relative",
+      height: 210,
+      overflow: "hidden",
+    },
+
+    priceTag: {
+      position: "absolute",
+      bottom: 14,
+      right: 14,
+      background: "linear-gradient(135deg,#1677ff,#f97316)",
+      color: "#fff",
+      padding: "6px 14px",
+      borderRadius: 10,
+      fontWeight: 700,
+      fontSize: 13,
+      boxShadow: "0 6px 18px rgba(0,0,0,0.25)",
+    },
+
+    badge: {
+      position: "absolute",
+      top: 14,
+      left: 14,
+      background: "rgba(255,255,255,0.95)",
+      padding: "5px 12px",
+      borderRadius: 999,
+      fontSize: 11,
+      fontWeight: 700,
+      color: "#1677ff",
+    },
+
+    content: {
+      padding: "22px 22px 20px",
+    },
+
+    specs: {
+      display: "flex",
+      justifyContent: "space-between",
+      marginTop: 16,
+      paddingTop: 14,
+      borderTop: "1px solid #f1f5f9",
+      color: "#64748b",
+      fontSize: 13,
+    },
+  };
+
+  return (
+    <ConfigProvider theme={{ token: { colorPrimary: "#1677ff" } }}>
+      <section style={styles.section}>
+        {/* Header */}
+        <div style={styles.header}>
+          <Tag color="orange" style={{ fontWeight: 700, borderRadius: 6 }}>
+            BENGALURU SPECIALS
+          </Tag>
+          <Title level={2} style={{ marginTop: 12, fontWeight: 800 }}>
+            Premium <span style={{ color: "#f97316" }}>Collections</span>
+          </Title>
+        </div>
+
+        {/* Loading / Empty / Carousel */}
+        {loading ? (
+          <div style={{ textAlign: "center", padding: 80 }}>
+            <Spin size="large" />
+          </div>
+        ) : properties.length === 0 ? (
+          <Empty description="No properties listed yet" />
+        ) : (
+          <div
+            style={styles.carouselWrapper}
+            onMouseEnter={() => setIsPlaying(false)}
+            onMouseLeave={() => setIsPlaying(true)}
+          >
+            <div style={styles.cardsContainer} ref={scrollRef}>
+              {properties.map((p) => (
+                <div
+                  key={p.id || p.pid}
+                  className="premium-card"
+                  style={styles.card}
+                  onClick={() => setSelectedProperty(p)}
+                >
+                  <div style={styles.imageWrap}>
+                    <Image
+                      src={p.pimage}
+                      alt={p.pname}
+                      preview={false}
+                      placeholder
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        transition: "transform .6s ease",
+                      }}
+                      className="property-img"
+                    />
+
+                    <div style={styles.badge}>{p.ptype}</div>
+                    <div style={styles.priceTag}>
+                      ₹{Number(p.p_price).toLocaleString()}
+                    </div>
+                  </div>
+
+                  <div style={styles.content}>
+                    <Title level={5} style={{ margin: 0 }}>
+                      {p.pname}
+                    </Title>
+
+                    <Text type="secondary" style={{ fontSize: 13 }}>
+                      <FaMapMarkerAlt
+                        style={{ color: "#f97316", marginRight: 6 }}
+                      />
+                      {p.plocation}
+                    </Text>
+
+                    <div style={styles.specs}>
+                      <span>
+                        <FaBed /> {p.pbeds} BHK
+                      </span>
+                      <span>
+                        <FaBath /> {p.pbaths}
+                      </span>
+                      <span>
+                        <FaRulerCombined /> {p.parea}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
-        </div>
-      )}
-    </section>
+        )}
+
+        {/* Modal — DESIGN UNCHANGED */}
+        <Modal
+          open={!!selectedProperty}
+          onCancel={() => setSelectedProperty(null)}
+          footer={null}
+          width={850}
+          centered
+          className="luxury-modal"
+          bodyStyle={{ padding: 0 }}
+        >
+          {selectedProperty && (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: isMobile ? "column" : "row",
+                minHeight: 500,
+              }}
+            >
+              {/* Image Side */}
+              <div style={{ flex: 1.1, position: "relative", minHeight: 350 }}>
+                <Image
+                  src={selectedProperty.pimage}
+                  alt={selectedProperty.pname}
+                  preview={true}
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                />
+                <div className="modal-img-overlay">
+                  <Tag
+                    color="blue"
+                    style={{ borderRadius: 4, fontWeight: 600 }}
+                  >
+                    FEATURED
+                  </Tag>
+                  <div className="rating-tag">
+                    <FaStar style={{ color: "#fbbf24" }} /> 4.9
+                  </div>
+                </div>
+              </div>
+
+              {/* Info Side */}
+              <div
+                style={{
+                  flex: 1,
+                  padding: "36px 40px",
+                  background: "#fff",
+                  borderTopRightRadius: 16,
+                  borderBottomRightRadius: 16,
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "flex-start",
+                  }}
+                >
+                  <Text
+                    strong
+                    style={{
+                      color: "#1677ff",
+                      fontSize: 12,
+                      letterSpacing: 1.2,
+                    }}
+                  >
+                    {selectedProperty.ptype.toUpperCase()}
+                  </Text>
+
+                  <div
+                    className={`watchlist-btn ${isWatched ? "active" : ""}`}
+                    onClick={toggleWatchlist}
+                    title="Add to Watchlist"
+                  >
+                    {isWatched ? <FaHeart color="#ef4444" /> : <FaRegHeart />}
+                  </div>
+                </div>
+
+                <Title
+                  level={3}
+                  style={{ marginTop: 8, marginBottom: 4, fontWeight: 800 }}
+                >
+                  {selectedProperty.pname}
+                </Title>
+
+                <Text type="secondary">
+                  <FaMapMarkerAlt style={{ color: "#f97316" }} />{" "}
+                  {selectedProperty.plocation}
+                </Text>
+
+                <div
+                  style={{
+                    marginTop: 24,
+                    padding: "16px 20px",
+                    background: "#f8fafc",
+                    borderRadius: 16,
+                  }}
+                >
+                  <Text type="secondary" style={{ fontSize: 12 }}>
+                    Market Valuation
+                  </Text>
+                  <Title
+                    level={2}
+                    style={{ color: "#0f172a", margin: 0, fontWeight: 800 }}
+                  >
+                    ₹ {Number(selectedProperty.p_price).toLocaleString()}
+                  </Title>
+                </div>
+
+                <Divider style={{ margin: "24px 0" }} />
+
+                <Row gutter={[16, 20]} style={{ marginBottom: 24 }}>
+                  <Col span={8} style={{ textAlign: "center" }}>
+                    <div className="spec-icon">
+                      <FaBed />
+                    </div>
+                    <Text strong style={{ fontSize: 13 }}>
+                      {selectedProperty.pbeds} BHK
+                    </Text>
+                  </Col>
+
+                  <Col span={8} style={{ textAlign: "center" }}>
+                    <div className="spec-icon">
+                      <FaBath />
+                    </div>
+                    <Text strong style={{ fontSize: 13 }}>
+                      {selectedProperty.pbaths} Baths
+                    </Text>
+                  </Col>
+
+                  <Col span={8} style={{ textAlign: "center" }}>
+                    <div className="spec-icon">
+                      <FaRulerCombined />
+                    </div>
+                    <Text strong style={{ fontSize: 13 }}>
+                      {selectedProperty.parea} ft²
+                    </Text>
+                  </Col>
+                </Row>
+
+                <div style={{ display: "flex", gap: 12, marginBottom: 30 }}>
+                  <Tag icon={<FaShieldAlt />} color="success">
+                    Verified
+                  </Tag>
+                  <Tag icon={<FaParking />} color="default">
+                    Parking Incl.
+                  </Tag>
+                </div>
+
+                <Paragraph
+                  style={{
+                    color: "#64748b",
+                    fontSize: 14,
+                    lineHeight: "1.6",
+                    marginBottom: 32,
+                  }}
+                >
+                  {selectedProperty.pdescription ||
+                    "This premium property offers a unique blend of modern luxury and serene living, featuring state-of-the-art amenities in the heart of Bengaluru."}
+                </Paragraph>
+
+                <Button
+                  type="primary"
+                  size="large"
+                  block
+                  onClick={handleBook}
+                  className="confirm-interest-btn"
+                >
+                  Schedule Site Visit
+                </Button>
+              </div>
+            </div>
+          )}
+        </Modal>
+
+        <style>{`
+          .premium-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 60px rgba(2,6,23,0.15) !important;
+            border-color: #1677ff !important;
+          }
+
+          .premium-card:hover img {
+            transform: scale(1.08);
+          }
+
+          .luxury-modal .ant-modal-content {
+            border-radius: 20px;
+            overflow: hidden;
+          }
+
+          .modal-img-overlay {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          }
+
+          .rating-tag {
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(8px);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+          }
+
+          .watchlist-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: #64748b;
+          }
+
+          .watchlist-btn:hover {
+            background: #fee2e2;
+            color: #ef4444;
+            transform: scale(1.1);
+          }
+
+          .watchlist-btn.active {
+            background: #fee2e2;
+            color: #ef4444;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+          }
+
+          .spec-icon {
+            background: #eff6ff;
+            color: #1677ff;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            margin: 0 auto 8px;
+          }
+
+          .confirm-interest-btn {
+            height: 56px !important;
+            font-weight: 700 !important;
+            border-radius: 16px !important;
+            background: linear-gradient(135deg,#1677ff 0%,#f97316 100%) !important;
+            border: none !important;
+            transition: all 0.3s ease !important;
+            box-shadow: 0 10px 25px rgba(22, 119, 255, 0.25) !important;
+          }
+
+          .confirm-interest-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(249, 115, 22, 0.35) !important;
+            filter: brightness(1.1);
+          }
+        `}</style>
+      </section>
+    </ConfigProvider>
   );
 }
