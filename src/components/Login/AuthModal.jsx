@@ -1,35 +1,24 @@
 import React, { useState } from "react";
+import { Modal, Form, Input, Button, Alert, Typography } from "antd";
 
-// Import CSS for styling the modal and forms
-import "./LoginSignup.css";
+const { Title, Text } = Typography;
 
 export default function AuthModal({ onClose, onAuthSuccess }) {
-  const [mode, setMode] = useState("login"); // or "signup"
-  const [inputs, setInputs] = useState({
-    username: "",
-    email: "",
-    password: "",
-    confirmPass: "",
-  });
+  const [mode, setMode] = useState("login");
   const [alert, setAlert] = useState(null);
+  const [form] = Form.useForm();
 
-  // Update form fields on change
-  const handleChange = (e) => {
-    setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-
-  // Handler for login form submission
-  const handleLogin = (e) => {
-    e.preventDefault();
+  const handleLogin = (values) => {
     const usersStr = localStorage.getItem("users");
     const users = usersStr ? JSON.parse(usersStr) : [];
-    const user = users.find((u) => u.email === inputs.email);
+    const user = users.find((u) => u.email === values.email);
 
     if (!user) {
       setAlert({ type: "error", message: "No user found with this email" });
       return;
     }
-    if (user.password !== inputs.password) {
+
+    if (user.password !== values.password) {
       setAlert({ type: "error", message: "Incorrect password" });
       return;
     }
@@ -44,11 +33,8 @@ export default function AuthModal({ onClose, onAuthSuccess }) {
     }, 800);
   };
 
-  // Handler for signup form submission
-  const handleSignup = (e) => {
-    e.preventDefault();
-
-    if (inputs.password !== inputs.confirmPass) {
+  const handleSignup = (values) => {
+    if (values.password !== values.confirmPass) {
       setAlert({ type: "error", message: "Passwords do not match" });
       return;
     }
@@ -56,19 +42,24 @@ export default function AuthModal({ onClose, onAuthSuccess }) {
     const usersStr = localStorage.getItem("users");
     const users = usersStr ? JSON.parse(usersStr) : [];
 
-    if (users.find((u) => u.email === inputs.email)) {
+    if (users.find((u) => u.email === values.email)) {
       setAlert({ type: "error", message: "Email already registered" });
       return;
     }
 
     const newUser = {
-      username: inputs.username,
-      email: inputs.email,
-      password: inputs.password,
+      username: values.username,
+      email: values.email,
+      password: values.password,
     };
+
     users.push(newUser);
     localStorage.setItem("users", JSON.stringify(users));
-    setAlert({ type: "success", message: "Registration successful! Logging in..." });
+
+    setAlert({
+      type: "success",
+      message: "Registration successful! Logging in...",
+    });
 
     setTimeout(() => {
       localStorage.setItem("loggedInUser", JSON.stringify(newUser));
@@ -78,101 +69,141 @@ export default function AuthModal({ onClose, onAuthSuccess }) {
     }, 1200);
   };
 
+  const onFinish = (values) => {
+    if (mode === "login") {
+      handleLogin(values);
+    } else {
+      handleSignup(values);
+    }
+  };
+
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <form
-          className="auth-form"
-          onSubmit={mode === "login" ? handleLogin : handleSignup}
+    <Modal
+      open
+      onCancel={onClose}
+      footer={null}
+      centered
+      width={420}
+      destroyOnClose
+    >
+      <div style={{ padding: "10px 6px" }}>
+        <Title level={3} style={{ textAlign: "center", marginBottom: 8 }}>
+          {mode === "login" ? "Login" : "Sign Up"}
+        </Title>
+
+        <Text
+          type="secondary"
+          style={{ display: "block", textAlign: "center", marginBottom: 24 }}
         >
-          <h2>{mode === "login" ? "Login" : "Sign Up"}</h2>
-          {alert && <div className={`alert ${alert.type}`}>{alert.message}</div>}
+          {mode === "login"
+            ? "Welcome back! Please login to continue"
+            : "Create your account to get started"}
+        </Text>
 
+        {alert && (
+          <Alert
+            type={alert.type}
+            message={alert.message}
+            showIcon
+            style={{ marginBottom: 16 }}
+          />
+        )}
+
+        <Form
+          form={form}
+          layout="vertical"
+          onFinish={onFinish}
+          autoComplete="off"
+        >
           {mode === "signup" && (
-            <input
+            <Form.Item
               name="username"
-              type="text"
-              value={inputs.username}
-              placeholder="Username"
-              required
-              onChange={handleChange}
-              autoComplete="username"
-            />
+              label="Username"
+              rules={[{ required: true, message: "Please enter username" }]}
+            >
+              <Input size="large" placeholder="Enter username" />
+            </Form.Item>
           )}
 
-          <input
+          <Form.Item
             name="email"
-            type="email"
-            value={inputs.email}
-            placeholder="Email"
-            required
-            onChange={handleChange}
-            autoComplete="email"
-          />
+            label="Email"
+            rules={[
+              { required: true, message: "Please enter email" },
+              { type: "email", message: "Enter valid email" },
+            ]}
+          >
+            <Input size="large" placeholder="Enter email" />
+          </Form.Item>
 
-          <input
+          <Form.Item
             name="password"
-            type="password"
-            value={inputs.password}
-            placeholder="Password"
-            required
-            onChange={handleChange}
-            autoComplete={mode === "login" ? "current-password" : "new-password"}
-          />
+            label="Password"
+            rules={[{ required: true, message: "Please enter password" }]}
+          >
+            <Input.Password size="large" placeholder="Enter password" />
+          </Form.Item>
 
           {mode === "signup" && (
-            <input
+            <Form.Item
               name="confirmPass"
-              type="password"
-              value={inputs.confirmPass}
-              placeholder="Confirm Password"
-              required
-              onChange={handleChange}
-              autoComplete="new-password"
-            />
+              label="Confirm Password"
+              rules={[{ required: true, message: "Please confirm password" }]}
+            >
+              <Input.Password size="large" placeholder="Confirm password" />
+            </Form.Item>
           )}
 
-          <button type="submit">{mode === "login" ? "Login" : "Sign Up"}</button>
+          <Form.Item style={{ marginTop: 10 }}>
+            <Button
+              type="primary"
+              htmlType="submit"
+              block
+              size="large"
+              style={{
+                height: 48,
+                fontWeight: 600,
+                background: "linear-gradient(135deg, #1677ff 0%, #f97316 100%)",
+                border: "none",
+              }}
+            >
+              {mode === "login" ? "Login" : "Create Account"}
+            </Button>
+          </Form.Item>
+        </Form>
 
-          <p>
-            {mode === "login" ? (
-              <>
-                New user?{" "}
-                <button
-                  type="button"
-                  onClick={() => setMode("signup")}
-                  style={{
-                    color: "#00b94d",
-                    background: "none",
-                    border: "none",
-                    textDecoration: "underline",
-                    cursor: "pointer",
-                  }}
-                >
-                  Sign up here
-                </button>
-              </>
-            ) : (
-              <>
-                Already have an account?{" "}
-                <button
-                  type="button"
-                  onClick={() => setMode("login")}
-                  style={{
-                    color: "#00b94d",
-                    background: "none",
-                    border: "none",
-                    textDecoration: "underline",
-                    cursor: "pointer",
-                  }}
-                >
-                  Login here
-                </button>
-              </>
-            )}
-          </p>
-        </form>
+        <div style={{ textAlign: "center", marginTop: 10 }}>
+          {mode === "login" ? (
+            <Text>
+              New user?{" "}
+              <Button
+                type="link"
+                onClick={() => {
+                  setMode("signup");
+                  setAlert(null);
+                  form.resetFields();
+                }}
+              >
+                Sign up here
+              </Button>
+            </Text>
+          ) : (
+            <Text>
+              Already have an account?{" "}
+              <Button
+                type="link"
+                onClick={() => {
+                  setMode("login");
+                  setAlert(null);
+                  form.resetFields();
+                }}
+              >
+                Login here
+              </Button>
+            </Text>
+          )}
+        </div>
       </div>
-    </div>
+    </Modal>
   );
 }
